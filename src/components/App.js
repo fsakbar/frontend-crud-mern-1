@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react"; // Import useState? For What
 import axios from 'axios'; // promise based http client for nodejs, this is pretty cool
 import notesStore from "../store/notesStore";
+import Notes from "./Notes";
+import UpdateForm from "./UpdateForm";
+import CreateForm from "./CreateForm";
+
 
 function App() {
   const store = notesStore();
@@ -122,41 +126,12 @@ function App() {
 
   return (
     <div className="App">
-    <div>
-      <h2>Notes: </h2>
-      {store.notes && store.notes.map(note => {
-        return (
-          <div key = {note._id}>
-            <h3>Title : {note.title}</h3>
-            <h6>Body : {note.body}</h6>
-            <button onClick={() => store.deleteNote(note._id)}>Delete note</button>
-            <button onClick={() => store.toggleUpdate(note)}>Update note</button>
-          </div>
-        )
-      })}
-      </div>
+    <Notes/>
 
-      {store.updateForm._id && (
-      <div>
-        <h2>Update Note</h2>
-        <form onSubmit={store.updateNote}>
-          <input onChange={store.handleUpdateFieldChange} value={store.updateForm.title} name = "title" />
-          <textarea onChange={store.handleUpdateFieldChange} value={store.updateForm.body} name = "body" />
-          <button  type="submit">Update Note</button>
-        </form>
-      </div>
-      )}
+    <UpdateForm/>
 
-      {!store.updateForm._id && (<div>
-        <h2>Create Note</h2>
-        <form onSubmit={store.createNote}>
-          <input onChange={store.updateCreateFormField} value={store.createForm.title} name="title" />
-          <textarea onChange={store.updateCreateFormField} value={store.createForm.body} name="body" />
-          <button type="submit">create Note</button>
-        </form>
-      </div>
-      )}
-    </div>
+    <CreateForm/>
+    </div>  
       
   );
 }
