@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react"; // Import useState? For What
 import axios from 'axios'; // promise based http client for nodejs, this is pretty cool
+import notesStore from "../store/notesStore";
 
 function App() {
+  const store = notesStore();
+
   // State
   const [notes, setNotes] = useState(null)
 
@@ -19,11 +22,11 @@ function App() {
   // Everything put in here, is gonna run
   // Use Effect
   useEffect(() => {
-    fetchNotes();
+    store.fetchNotes();
   }, [])
 
 
-  // Functiond
+  // Function
   // Use Note From Server can Fetch
   const fetchNotes = async() => {
     // Fetch Note
@@ -34,19 +37,16 @@ function App() {
     // Check in console localhost:3001
     // console.log(res)
   }
-
   // Use For From Field can filled.
   const updateCreateFormField = (event) => {
     const {name, value} = event.target;
     // console.log({name, value})
     // console.log("Hey")
-
     setCreateForm({
       ...createForm,
       [name]: value,
     })
   }
-
   const createNote = async (event) => {
     event.preventDefault();
 
@@ -60,8 +60,6 @@ function App() {
     // Clear Form State
     setCreateForm({title: '', body: ''})
   }
-
-
   // Delete Note
   const deleteNote = async (_id) => {
     // Delete the note
@@ -124,38 +122,36 @@ function App() {
 
   return (
     <div className="App">
-      <div>
-      Random Text
-
+    <div>
       <h2>Notes: </h2>
-      {notes && notes.map(note => {
+      {store.notes && store.notes.map(note => {
         return (
           <div key = {note._id}>
             <h3>Title : {note.title}</h3>
-            <h3>Body : {note.body}</h3>
-            <button onClick={() => deleteNote(note._id)}>Delete note</button>
-            <button onClick={() => toggleUpdate(note)}>Update note</button>
+            <h6>Body : {note.body}</h6>
+            <button onClick={() => store.deleteNote(note._id)}>Delete note</button>
+            <button onClick={() => store.toggleUpdate(note)}>Update note</button>
           </div>
         )
       })}
       </div>
 
-      {updateForm._id && (
+      {store.updateForm._id && (
       <div>
         <h2>Update Note</h2>
-        <form onSubmit={updateNote}>
-          <input onChange={handleUpdateFieldChange} value={updateForm.title} name = "title" />
-          <textarea onChange={handleUpdateFieldChange} value={updateForm.body} name = "body" />
+        <form onSubmit={store.updateNote}>
+          <input onChange={store.handleUpdateFieldChange} value={store.updateForm.title} name = "title" />
+          <textarea onChange={store.handleUpdateFieldChange} value={store.updateForm.body} name = "body" />
           <button  type="submit">Update Note</button>
         </form>
       </div>
       )}
 
-      {!updateForm._id && (<div>
+      {!store.updateForm._id && (<div>
         <h2>Create Note</h2>
-        <form onSubmit={createNote}>
-          <input onChange={updateCreateFormField} value={createForm.title} name="title" />
-          <textarea onChange={updateCreateFormField} value={createForm.body} name="body" />
+        <form onSubmit={store.createNote}>
+          <input onChange={store.updateCreateFormField} value={store.createForm.title} name="title" />
+          <textarea onChange={store.updateCreateFormField} value={store.createForm.body} name="body" />
           <button type="submit">create Note</button>
         </form>
       </div>
