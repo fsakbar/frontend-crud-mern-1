@@ -43,7 +43,6 @@ const authStore = create((set) => ({
   },
 
   login: async () => {
-
     const{loginForm} = authStore.getState()
     const res = await axios.post('/login', loginForm);
 
@@ -84,12 +83,6 @@ const authStore = create((set) => ({
     set({loggedIn: false})
 
   }
-
-
-
-
-
-
 }))
 
 export default authStore;

@@ -6,8 +6,6 @@ import authStore from "../store/authStore";
 export default function RequireAuth(props) {
     const store = authStore();
 
-
-
     useEffect(() => {
         if (store.loggedIn === null){
             store.checkAuth();
@@ -22,13 +20,9 @@ export default function RequireAuth(props) {
         return <Navigate to = "/login"/>
     }
 
-
-
     return (
         <div>
         {props.children}
         </div>
     )
 }
-
-{/* <RequireAuth>fwerfwer</RequireAuth> */}
